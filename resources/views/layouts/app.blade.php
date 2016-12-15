@@ -28,13 +28,18 @@
 <body id="app-layout">
     <nav class="navbar navbar-default">
         <div class="container">
-            <div class="navbar-header">
 
+            <div class="navbar-header">
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    Tickets
+                    Prenote
                 </a>
             </div>
+
+            <ul class="nav navbar-nav">
+                <li><a href="{{ url('/tickets') }}">View Tickets</a></li>
+                <li><a href="{{ url('/tickets/create') }}">Add Ticket</a>
+            </ul>
 
         </div>
     </nav>

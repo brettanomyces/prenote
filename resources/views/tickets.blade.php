@@ -5,39 +5,59 @@
         <div class="col-sm-offset-2 col-sm-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    New Ticket
+                    New Task
                 </div>
 
                 <div class="panel-body">
+                    <!-- Display Validation Errors -->
+                    @include('common.errors')
 
-                 <button href="{{ route('ticket') }}" type="button" class="btn btn-default">
-                    <i class="fa fa-btn fa-plus">Add Ticket</i>
-                 </button>
-                
+                    <!-- New Task Form -->
+                    <form action="{{ url('task')}}" method="POST" class="form-horizontal">
+                        {{ csrf_field() }}
+
+                        <!-- Task Name -->
+                        <div class="form-group">
+                            <label for="task-name" class="col-sm-3 control-label">Task</label>
+
+                            <div class="col-sm-6">
+                                <input type="text" name="name" id="task-name" class="form-control" value="{{ old('task') }}">
+                            </div>
+                        </div>
+
+                        <!-- Add Task Button -->
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-6">
+                                <button type="submit" class="btn btn-default">
+                                    <i class="fa fa-btn fa-plus"></i>Add Task
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 
-            <!-- Current Tickets -->
-            @if (count($tickets) > 0)
+            <!-- Current Tasks -->
+            @if (count($tasks) > 0)
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Current Tickets
+                        Current Tasks
                     </div>
 
                     <div class="panel-body">
-                        <table class="table table-striped ticket-table">
+                        <table class="table table-striped task-table">
                             <thead>
-                                <th>Ticket</th>
+                                <th>Task</th>
                                 <th>&nbsp;</th>
                             </thead>
                             <tbody>
-                                @foreach ($tickets as $ticket)
+                                @foreach ($tasks as $task)
                                     <tr>
-                                        <td class="table-text"><div>{{ $ticket->title }}</div></td>
+                                        <td class="table-text"><div>{{ $task->name }}</div></td>
 
-                                        <!-- Ticket Delete Button -->
+                                        <!-- Task Delete Button -->
                                         <td>
-                                            <form action="{{ url('ticket/'.$ticket->id) }}" method="POST">
+                                            <form action="{{ url('task/'.$task->id) }}" method="POST">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
 
