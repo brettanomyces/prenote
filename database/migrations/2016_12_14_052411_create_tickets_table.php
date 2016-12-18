@@ -13,18 +13,17 @@ class CreateTicketsTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('tickets');
         Schema::create('tickets', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
             $table->text('description');
-            $table->string('priority');
-            $table->integer('customer_id')->unsigned();
+            $table->integer('priority_id')->unsigned()->nullable();
+            $table->integer('customer_id')->unsigned()->nullable();
             $table->timestamps();
         });
 
-        Schema::table('tickets', function(Blueprint $table) {
-            $table->foreign('customer_id')->references('id')->on('customers');
-        });
+
     }
 
     /**

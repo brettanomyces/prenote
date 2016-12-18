@@ -37,12 +37,24 @@
             </div>
 
             <ul class="nav navbar-nav">
-                <li><a href="{{ url('/tickets') }}">View Tickets</a></li>
-                <li><a href="{{ url('/tickets/create') }}">Add Ticket</a>
+                <li><a href="{{ url('/tickets') }}">View All</a></li>
+                <li><a href="{{ url('/tickets/create') }}">Add</a>
+                <li><a href="{{ url('/event') }}">Raise</a>
             </ul>
 
         </div>
     </nav>
+
+    <!-- Alert Box-->
+    @if(Session::has('message'))
+    <div class="container">
+        <div class="col-sm-offset-2 col-sm-8">
+            <div class="alert alert-info">
+                {{ Session::get('message') }}
+            </div>
+        </div>
+    </div>
+    @endif
 
     @yield('content')
 

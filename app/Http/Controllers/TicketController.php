@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Session;
 
 use View;
 use App\Ticket;
+use App\Customer;
+use App\Priority;
 
 class TicketController extends Controller
 {
@@ -22,8 +24,13 @@ class TicketController extends Controller
     public function index()
     {
         $tickets = Ticket::all();
+        $customers = Customer::all();
+        $priorities = Priority::all();  
 
-        return View::make('tickets.index')->with('tickets', $tickets);
+        return View::make('tickets.index')
+            ->with('tickets', $tickets)
+            ->with('customers', $customers)
+            ->with('priorities', $priorities);
     }
 
     /**
@@ -33,7 +40,12 @@ class TicketController extends Controller
      */
     public function create()
     {
-        return View::make('tickets.create');
+        $customers = Customer::all();
+        $priorities = Priority::all();
+
+        return View::make('tickets.create')
+            ->with('customers', $customers)
+            ->with('priorities', $priorities);
     }
 
     /**
@@ -45,11 +57,11 @@ class TicketController extends Controller
     public function store(Request $request)
     {
         // validate
-        // read more on validation at http://laravel.com/docs/validation
         $rules = array(
             'title'       => 'required',
             'description' => 'required',
-            'priority'    => 'required|numeric'
+            'priority_id' => 'required|numeric',
+            'customer_id' => 'required|numeric'
         );
         $validator = Validator::make(Input::all(), $rules);
 
@@ -62,13 +74,13 @@ class TicketController extends Controller
             // store
             $ticket = new Ticket;
             $ticket->title       = Input::get('title');
-            $ticket->description      = Input::get('description');
-            $ticket->priority = Input::get('priority');
-            $ticket->customer_id = 1;  // TODO
+            $ticket->description = Input::get('description');
+            $ticket->customer_id = Input::get('customer_id');
+            $ticket->priority_id = Input::get('priority_id');
             $ticket->save();
 
             // redirect
-            Session::flash('message', 'Successfully created ticket!');
+            Session::flash('message', "Successfully created ticket '" . $ticket->title . "'");
             return Redirect::to('tickets');
         }
     }
@@ -83,9 +95,14 @@ class TicketController extends Controller
     {
         // get the ticket
         $ticket = Ticket::find($id);
+        $customers = Customer::all();
+        $priorities = Priority::all();  
 
         // show the view and pass the ticket to it
-        return View::make('tickets.show')->with('ticket', $ticket);
+        return View::make('tickets.show')
+            ->with('ticket', $ticket)
+            ->with('customers', $customers)
+            ->with('priorities', $priorities);
     }
 
     /**
@@ -98,9 +115,14 @@ class TicketController extends Controller
     {
         // get the ticket
         $ticket = Ticket::find($id);
+        $customers = Customer::all();
+        $priorities = Priority::all();            
 
         // show the edit form and pass the ticket
-        return View::make('tickets.edit')->with('ticket', $ticket);
+        return View::make('tickets.edit')
+            ->with('ticket', $ticket)
+            ->with('customers', $customers)
+            ->with('priorities', $priorities);
     }
 
     /**
@@ -113,29 +135,29 @@ class TicketController extends Controller
     public function update(Request $request, $id)
     {
         // validate
-        // read more on validation at http://laravel.com/docs/validation
         $rules = array(
             'title'       => 'required',
-            'description'      => 'required',
-            'priority' => 'required|numeric'
+            'description' => 'required',
+            'customer_id' => 'required|numeric',
+            'priority_id' => 'required|numeric'
         );
+
         $validator = Validator::make(Input::all(), $rules);
 
-        // process the login
         if ($validator->fails()) {
-            return Redirect::to('neticketrds/' . $id . '/edit')
-                ->withErrors($validator)
-                ->withInput(Input::except('password'));
+            return Redirect::to('tickets/' . $id . '/edit')
+                ->withErrors($validator);
         } else {
             // store
             $ticket = Ticket::find($id);
             $ticket->title       = Input::get('title');
-            $ticket->description      = Input::get('description');
-            $ticket->priority = Input::get('priority');
+            $ticket->description = Input::get('description');
+            $ticket->customer_id = Input::get('customer_id');
+            $ticket->priority_id = Input::get('priority_id');
             $ticket->save();
 
             // redirect
-            Session::flash('message', 'Successfully updated ticket');
+            Session::flash('message', "Successfully updated ticket '" . $ticket->title . "'" );
             return Redirect::to('tickets');
         }
     }
@@ -153,7 +175,8 @@ class TicketController extends Controller
         $ticket->delete();
 
         // redirect
-        Session::flash('message', 'Successfully resolved the ticket!');
+        Session::flash('message', "Successfully resolved ticket '" . $ticket->title . "'" );
         return Redirect::to('tickets');
     }
+
 }

@@ -21,19 +21,15 @@
                                 @foreach ($tickets as $ticket)
                                     <tr>
                                         <td class="table-text"><div>{{ $ticket->title }}</div></td>
-                                        <td class="table-text"><div>{{ $ticket->description }}</div></td>
-                                        <td class="table-text"><div>{{ $ticket->priority }}</div></td>
 
-                                        <!-- Task Resolve (Delete) Button -->
+                                        <!-- View Ticket -->
                                         <td>
-                                            <form action="{{ action('TicketController@destroy', $ticket->id) }}" method="POST">
-                                                {{ csrf_field() }}
-                                                {{ method_field('DELETE') }}
-                                                <button type="submit" class="btn btn-danger">
-                                                    <i class="fa fa-btn fa-trash"></i>Resolve
+                                            <form action="{{ action('TicketController@show', $ticket->id) }}" method="GET">
+                                                <button type="submit" class="btn btn-primary">
+                                                    View
                                                 </button>
                                             </form>
-                                        </td>                                      
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

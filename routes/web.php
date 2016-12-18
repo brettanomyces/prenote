@@ -1,16 +1,11 @@
 <?php
 
-use App\Ticket;
 use Illuminate\Http\Request;
+use App\Http\Controllers\TicketController;
 
-/**
- * API endpoints
- */
 Route::resource('tickets', 'TicketController');
 
+Route::get('/', 'TicketController@index');
 
-Route::get('/', function () {
-    $tickets = Ticket::all();
-    return View::make('tickets.index')->with('tickets', $tickets);
-});
+Route::get('/event', 'EventController');
 

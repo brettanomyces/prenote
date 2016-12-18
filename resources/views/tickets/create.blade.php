@@ -22,7 +22,7 @@
                         <div class="form-group">
                             <label for="ticket-title" class="col-sm-3 control-label">Title</label>
                             <div class="col-sm-6">
-                                <input type="text" name="title" id="ticket-title" class="form-control" value="{{ old('ticket') }}">
+                                <input type="text" name="title" id="ticket-title" class="form-control" value="{{ old('title') }}">
                             </div>
                         </div>
 
@@ -30,7 +30,20 @@
                         <div class="form-group">
                             <label for="ticket-description" class="col-sm-3 control-label">Description</label>
                             <div class="col-sm-6">
-                                <textarea rows="5" name="description" id="ticket-description" class="form-control" value="{{ old('ticket') }}"></textarea>
+                                <textarea rows="5" name="description" id="ticket-description" class="form-control">{{ old('description')}}</textarea>
+                            </div>
+                        </div>
+
+                        <!-- Ticket Customer-->
+                        <div class="form-group">
+                            <label for="ticket-customer" class="col-sm-3 control-label">Customer</label>
+                            <div class="col-sm-6">
+                                 <select name="customer_id" id='ticket-customer' class="form-control" value="{{ old('customer_id') }}">
+                                    <option value="">Please Select</option>
+                                    @foreach($customers as $customer)
+                                        <option value="{{$customer->id}}">{{ $customer->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 
@@ -38,12 +51,11 @@
                         <div class="form-group">
                             <label for="ticket-priority" class="col-sm-3 control-label">Priority</label>
                             <div class="col-sm-6">
-                                 <select name="priority" id='ticket-priority' class="form-control" value="{{ old('ticket') }}">
-                                    <option value="0">Volvo</option>
-                                    <option value="1">Urgent</option>
-                                    <option value="2">High</option>
-                                    <option value="3">Normal</option>
-                                    <option value="4">Low</option>
+                                 <select name="priority_id" id='ticket-priority' class="form-control" value="{{ old('priority_id') }}">
+                                    <option value="">Please Select</option>
+                                    @foreach($priorities as $priority)
+                                        <option value="{{$priority->id}}">{{ $priority->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -51,8 +63,8 @@
                         <!-- Add Task Button -->
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-6">
-                                <button type="submit" class="btn btn-default">
-                                    <i class="fa fa-btn fa-plus"></i>Add Ticket
+                                <button type="submit" class="btn btn-primary">
+                                    Add
                                 </button>
                             </div>
                         </div>
